@@ -80,7 +80,7 @@ export const fetchTrainings = () => {
 };
 
 export const updateCustomer = (href, body) => {
-  return PostRequest(href, body, headers);
+  return PutRequest(href, body, headers);
 };
 
 export const deleteCustomer = (href) => {
