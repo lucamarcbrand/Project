@@ -1,4 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
+import fileSaver from "file-saver";
+import DownloadIcon from "@mui/icons-material/Download";
+import { Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -28,7 +31,23 @@ const initialState = {
   total: 0,
   currentCustHref: "",
 };
+function writeToCSVFile(customers) {
+  const filename = "customers.csv";
+  const data = extractAsCSV(customers);
+  const blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+  fileSaver.saveAs(blob, filename);
+}
 
+function extractAsCSV(customers) {
+  const header = [
+    "firstname, lastname, email, phone, streetaddress postcode, city",
+  ];
+  const rows = customers.map(
+    (cust) =>
+      `${cust.firstname}, ${cust.lastname}, ${cust.email}, ${cust.phone}, ${cust.streetaddress}, ${cust.postcode}, ${cust.city}`
+  );
+  return header.concat(rows).join("\n");
+}
 //customer page component
 const CustomerPage = () => {
   //states of the componet
@@ -38,7 +57,7 @@ const CustomerPage = () => {
   const [trainingDialog, setTrainingDialogOpen] = useState(false);
   const [search, setSarchCust] = useState("");
 
-  //it will open add training dialog box 
+  //it will open add training dialog box
   const handleTrainingModelOpen = () => {
     setTrainingDialogOpen(true);
   };
@@ -193,7 +212,7 @@ const CustomerPage = () => {
         break;
     }
   };
-// copy the temp modified grid input box value to original state values
+  // copy the temp modified grid input box value to original state values
   const copyEditedPropToOriginalProp = (row) => {
     row.city = row.cityEdit;
     row.email = row.emailEdit;
@@ -216,6 +235,10 @@ const CustomerPage = () => {
   //this function is to edit row input box values
   const editRowHandler = (event, param, col) => {
     param.row[col] = event.target.value;
+  };
+  const handleExportCSV = () => {
+    const customers = state.customers;
+    writeToCSVFile(customers);
   };
   //function to fetch al customers detail
   const fetchAllCust = () => {
@@ -259,9 +282,23 @@ const CustomerPage = () => {
             paddingBottom: 20,
           }}
         >
-          <div>
-            <AddNewCustomerDialog callBack={fetchAllCust} />
+          <div style={{display:"flex"}}>
+            <div style={{paddingRight:10}}>
+              <AddNewCustomerDialog callBack={fetchAllCust} />
+            </div>
+            
+            <div>
+              
+              <Button
+                variant="outlined"
+                startIcon={<DownloadIcon />}
+                onClick={handleExportCSV}
+              >
+                Export Customers data
+              </Button>
+            </div>
           </div>
+
           <div>
             <TextField
               margin="dense"
@@ -290,9 +327,12 @@ const CustomerPage = () => {
           pagination
           rows={
             search.length >= 3
-              ? state.customers.filter((cust) =>
-                  cust.firstname.toLowerCase().startsWith(search.toLowerCase())||
-                  cust.lastname.toLowerCase().startsWith(search.toLowerCase())
+              ? state.customers.filter(
+                  (cust) =>
+                    cust.firstname
+                      .toLowerCase()
+                      .startsWith(search.toLowerCase()) ||
+                    cust.lastname.toLowerCase().startsWith(search.toLowerCase())
                 )
               : state.customers
           }

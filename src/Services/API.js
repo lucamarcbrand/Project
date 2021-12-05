@@ -1,5 +1,5 @@
 import Axios from "axios";
-const DELETE_TRAINING='https://customerrest.herokuapp.com/api/trainings'
+const TRAINING='https://customerrest.herokuapp.com/api/trainings'
 export const FETCH_ALL_CUSTOMERS =
   "https://customerrest.herokuapp.com/api/customers";
 export const FETCH_ALL_TRAININGS =
@@ -87,7 +87,7 @@ export const deleteCustomer = (href) => {
   return DeleteRequest(href, headers);
 };
 export const deleteTraining = (id) => {
-  return DeleteRequest(`${DELETE_TRAINING}/${id}`, headers);
+  return DeleteRequest(`${TRAINING}/${id}`, headers);
 };
 
 export const createNewCustomer = (data) => {
@@ -95,5 +95,5 @@ export const createNewCustomer = (data) => {
 };
 
 export const addTraining=(data)=>{
-  return PostRequest(FETCH_ALL_TRAININGS, data,headers);
+  return PostRequest(TRAINING, data,headers);
 }

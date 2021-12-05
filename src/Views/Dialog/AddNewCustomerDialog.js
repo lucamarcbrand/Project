@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from "@mui/icons-material/Add";
 import { createNewCustomer } from "../../Services/API";
+
 //initial state
 const initCustomer = {
   city: "",
@@ -106,6 +107,7 @@ export default function AddNewCustomerDialog({callBack}) {
       >
         Add New Customer
       </Button>
+     
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create New Customer</DialogTitle>
         <DialogContent>

@@ -1,15 +1,17 @@
 import ApplicationBar from "./Views/ApplicationBar";
 import CustomerPage from "./Views/CustomerPage";
 import TrainingsPage from "./Views/TrainingsPage";
+import StatisticPage from "./Views/StatisticPage";
 import ApplicationDrawer from "./Views/ApplicationDrawer";
 import "./App.css";
 import React, { useState } from "react";
-import {  Container } from "@mui/material";
+import { Container } from "@mui/material";
 
 //pages in application
 const Pages = {
   Customers: "Customers",
   Training: "Training",
+  Statistics: "Statistics",
 };
 //initial state of application
 const initState = {
@@ -21,7 +23,7 @@ export const App = () => {
   //state of application
   const [state, setState] = useState(initState);
 
-  //function to change the page 
+  //function to change the page
   function changePage(pageName) {
     setState((prevState) => ({
       isDrawerOpen: !prevState.isDrawerOpen,
@@ -36,6 +38,15 @@ export const App = () => {
       isDrawerOpen: !prevState.isDrawerOpen,
     }));
   }
+  function pageLoad(mainPageName) {
+    if (mainPageName === Pages.Customers) {
+      return <CustomerPage></CustomerPage>;
+    } else if (mainPageName === Pages.Training) {
+      return <TrainingsPage />;
+    } else if (mainPageName === Pages.Statistics) {
+      return <StatisticPage />;
+    }
+  }
   return (
     <div className="">
       <ApplicationBar openNav={openNavDrawer}></ApplicationBar>
@@ -45,13 +56,7 @@ export const App = () => {
         changePage={changePage}
       ></ApplicationDrawer>
 
-      <Container >
-        {state.mainPageName === Pages.Customers ? (
-          <CustomerPage></CustomerPage>
-        ) : (
-          <TrainingsPage/>
-        )}
-      </Container>
+      <Container>{pageLoad(state.mainPageName)}</Container>
     </div>
   );
 };

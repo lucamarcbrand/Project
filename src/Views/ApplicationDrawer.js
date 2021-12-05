@@ -9,10 +9,21 @@ import {
 } from "@mui/material";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-const menuItems = ["Customers", "Training"];
+import InsightsIcon from "@mui/icons-material/Insights";
+
+const menuItems = ["Customers", "Training", "Statistics"];
 
 // drawer to show menus in application
 const ApplicationDrawer = ({ isDrawerOpen, toggleDrawer, changePage }) => {
+  function getpageIcon(text) {
+    if (text === "Customers") {
+      return <AccountBoxIcon />;
+    } else if (text === "Training") {
+      return <DirectionsRunIcon />;
+    } else if (text === "Statistics") {
+      return <InsightsIcon />;
+    }
+  }
   function listItems() {
     return menuItems.map((text, index) => {
       return (
@@ -22,12 +33,9 @@ const ApplicationDrawer = ({ isDrawerOpen, toggleDrawer, changePage }) => {
           onClick={() => {
             toggleDrawer();
             changePage(text);
-           
           }}
         >
-          <ListItemIcon>
-            {text === "Customers" ? <AccountBoxIcon /> : <DirectionsRunIcon />}
-          </ListItemIcon>
+          <ListItemIcon>{getpageIcon(text)}</ListItemIcon>
           <ListItemText primary={text} />
         </ListItem>
       );
